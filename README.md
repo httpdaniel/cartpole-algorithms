@@ -1,1 +1,1 @@
-CartpoleRL
+cartpole-algorithms
