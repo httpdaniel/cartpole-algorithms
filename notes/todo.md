@@ -2,14 +2,14 @@
 
 ## Week 1
 
-###Daniel
+### Daniel
 Implement deep q-network
 
-###Matteo
+### Matteo
 Research genetic algorithms and begin implementation
 
-###Josh
+### Josh
 Find a suitable third algorithm to solve the cartpole environment
 
-###Claire
+### Claire
 Also research for a suitable third algorithm
