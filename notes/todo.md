@@ -3,7 +3,7 @@
 ## Week 1
 
 ### Daniel
-Implement deep q-network
+Begin the implementation of the deep q-network.
 
 ### Matteo
 Research genetic algorithms and begin implementation
