@@ -40,3 +40,29 @@
 
 ### Action Items
 * The group members are going to continue the implementation of their delegated algorithm whilst others carry out research.
+
+
+
+# Meeting Minutes - Week 3
+ 
+**Date:** Monday March 29th, 2021\
+**Time:** 16:00PM
+
+### Agenda Items
+* Discuss statistics to compare algorithms
+* Discuss final report
+
+### Minutes
+**Agenda Item 1 - Discuss statistics to compare algorithms**
+* The group members discussed ways in which the three algorithms can be compared.
+* We decided to use a common convergence condition (reward ≥ 195 for 100 iterations in a row).
+* When this condition is met, the time taken, final reward, and episodes taken, are recorded for comparison. 
+
+**Agenda Item 2 - Discuss final report**
+* The group had a discussion on the final report and how to collectively work on it.
+* We have decided to use a group LaTeX document on Overleaf for this.
+* This will be added to the Github incrementally as sections are added.
+
+### Action Items
+* The group members are going to continue the implementation of each algorithm.
+* The LaTeX document will be set up on Overleaf.
