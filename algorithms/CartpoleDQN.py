@@ -127,6 +127,17 @@ class CartpoleAgent:
                 self.replay()
             self.update_weights()
 
+            # Check for convergence - reward greater than 195 for 100 iterations in a row
+            if total_reward >= 195:
+                reward_count = reward_count + 1
+            else:
+                reward_count = 0
+            if reward_count >= 100:
+                end_time = time.time()
+                time_taken = end_time - start_time
+                get_results(total_reward, ep, time_taken)
+                break
+
             print('Episode{} Reward={} Count={}'.format(ep, total_reward, reward_count))
 
 
@@ -134,6 +145,20 @@ def main():
     env = gym.make('CartPole-v1')
     agent = CartpoleAgent(env)
     agent.train(max_episodes=1000)
+
+
+# Export results to csv
+def get_results(total_reward, ep, time_taken):
+    minutes = time_taken/60
+    minutes = '%.2f' % minutes
+
+    res = {'Final Reward': total_reward,
+           'Number of episodes': ep,
+           'Time Taken': minutes
+           }
+
+    res_df = pd.DataFrame([res], columns=['Final Reward', 'Number of episodes', 'Time Taken (Minutes)'])
+    res_df.to_csv('../results/DQN_Results.csv', index=False, encoding='utf-8')
 
 
 if __name__ == "__main__":
