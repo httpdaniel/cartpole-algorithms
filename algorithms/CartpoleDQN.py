@@ -126,6 +126,7 @@ class CartpoleAgent:
             if self.buffer.size() >= BATCH_SIZE:
                 self.replay()
             self.update_weights()
+            print('Episode{} Reward={} Count={}'.format(ep, total_reward, reward_count))
 
             # Check for convergence - reward greater than 195 for 100 iterations in a row
             if total_reward >= 195:
@@ -137,8 +138,6 @@ class CartpoleAgent:
                 time_taken = end_time - start_time
                 get_results(total_reward, ep, time_taken)
                 break
-
-            print('Episode{} Reward={} Count={}'.format(ep, total_reward, reward_count))
 
 
 def main():
@@ -154,11 +153,11 @@ def get_results(total_reward, ep, time_taken):
 
     res = {'Final Reward': total_reward,
            'Number of episodes': ep,
-           'Time Taken': minutes
+           'Time Taken (Minutes)': minutes
            }
 
     res_df = pd.DataFrame([res], columns=['Final Reward', 'Number of episodes', 'Time Taken (Minutes)'])
-    res_df.to_csv('../results/DQN_Results.csv', index=False, encoding='utf-8')
+    res_df.to_csv('../results/dqn-results.csv', index=False, encoding='utf-8')
 
 
 if __name__ == "__main__":
