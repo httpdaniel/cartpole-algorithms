@@ -5,7 +5,7 @@ import random
 class CartPoleGenetic:
     def __init__(self, population_size=10, weight_spread=2, crossover_individuals=4,
                     mutation_chance=0.05, mutation_value=1,
-                        random_seed=0, elitism=0.2, render_result=True):
+                        random_seed=0, elitism=0.2, convergence_condition=195, render_result=True):
         self.env = gym.make("CartPole-v1")
         self.env.seed(random_seed)
         random.seed(random_seed)
@@ -17,6 +17,7 @@ class CartPoleGenetic:
         self.mutation_chance = mutation_chance
         self.mutation_value = mutation_value
         self.elitism = elitism
+        self.convergence_condition = convergence_condition
         self.init_population()
 
     def init_population(self):
@@ -39,7 +40,7 @@ class CartPoleGenetic:
         fitness_score = 0
         done = False
 
-        while not done:
+        while not done and fitness_score < self.convergence_condition:
             if self.render_result:
                 self.env.render()
             action = CartPoleGenetic.select_action(weights, observation)
