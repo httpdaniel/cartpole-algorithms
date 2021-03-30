@@ -18,6 +18,7 @@ class CartPoleGenetic:
         self.mutation_value = mutation_value
         self.elitism = elitism
         self.convergence_condition = convergence_condition
+        self.convergence_count = 0
         self.init_population()
 
     def init_population(self):
@@ -40,7 +41,7 @@ class CartPoleGenetic:
         fitness_score = 0
         done = False
 
-        while not done and fitness_score < self.convergence_condition:
+        while not done:
             if self.render_result:
                 self.env.render()
             action = CartPoleGenetic.select_action(weights, observation)
@@ -94,6 +95,11 @@ class CartPoleGenetic:
         self.population = [weights for _, weights in sorted(zip(fitness_score_list, self.population))]
         self.population = list(reversed(self.population)) # from highest to lowest fitness_value
         fitness_score_list.sort(reverse=True) # I also sort the fitness_scores, so they match the order of the population
+        
+        if(np.mean(fitness_score_list) >= self.convergence_condition):
+            self.convergence_count += 1
+        else:
+            self.convergence_count = 0
 
         print(np.mean(fitness_score_list))
 
@@ -114,7 +120,12 @@ class CartPoleGenetic:
         self.mutate_generation()
 
 
+iteration_to_converge = 100
+iteration_count = 0
 
 cart_pole_genetic = CartPoleGenetic(population_size=20, render_result=False)
-for _ in range(100):
+while cart_pole_genetic.convergence_count < iteration_to_converge:
+    iteration_count += 1
     cart_pole_genetic.create_next_generation()
+
+print('iteration count', iteration_count)
