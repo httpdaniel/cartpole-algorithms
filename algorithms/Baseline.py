@@ -22,10 +22,11 @@ class CartpoleAgent:
 def main():
     env = gym.make('CartPole-v1')
     agent = CartpoleAgent(env)
+    episodes = 200
 
     final = []
     start_time = time.time()
-    for ep in tqdm(range(200)):
+    for ep in tqdm(range(episodes)):
         state = env.reset()
         done, total_reward = False, 0
         while not done:
@@ -37,10 +38,10 @@ def main():
         env.close()
         print('Episode{} Reward={}'.format(ep, total_reward))
         final.append(total_reward)
-        plot_results(final)
-        if ep == 199:
+        if ep == episodes-1:
             end_time = time.time()
             time_taken = end_time - start_time
+            plot_results(final)
             get_results(total_reward, ep, time_taken)
             break
 
@@ -48,7 +49,7 @@ def main():
 # Plot results for each iteration
 def plot_results(values):
 
-    fig, ax = plt.subplots(nrows=1, ncols=2, figsize=(12, 5))
+    fig, ax = plt.subplots(nrows=1, ncols=2, figsize=(12, 5), dpi=200)
     fig.suptitle("Random search baseline")
     ax[0].plot(values, label='score per run')
     ax[0].axhline(195, c='red', ls='--', label='goal')
