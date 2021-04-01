@@ -4,6 +4,7 @@ import random
 import time
 import pandas as pd
 import numpy as np
+import matplotlib.pyplot as plt
 
 from collections import deque
 from keras.models import Sequential
@@ -111,6 +112,7 @@ class CartpoleAgent:
     def train(self, max_episodes):
         start_time = time.time()
         reward_count = 0
+        final = []
         for ep in tqdm(range(max_episodes)):
             done, total_reward = False, 0
             state = self.env.reset()
@@ -127,6 +129,7 @@ class CartpoleAgent:
                 self.replay()
             self.update_weights()
             print('Episode{} Reward={} Count={}'.format(ep, total_reward, reward_count))
+            final.append(total_reward)
 
             # Check for convergence - reward greater than 195 for 100 iterations in a row
             if total_reward >= 195:
@@ -136,6 +139,7 @@ class CartpoleAgent:
             if reward_count >= 100:
                 end_time = time.time()
                 time_taken = end_time - start_time
+                plot_results(final)
                 get_results(total_reward, ep, time_taken)
                 break
 
@@ -158,6 +162,35 @@ def get_results(total_reward, ep, time_taken):
 
     res_df = pd.DataFrame([res], columns=['Final Reward', 'Number of episodes', 'Time Taken (Minutes)'])
     res_df.to_csv('../results/dqn-results.csv', index=False, encoding='utf-8')
+
+
+# Plot results for each iteration
+def plot_results(values):
+
+    fig, ax = plt.subplots(nrows=1, ncols=2, figsize=(12, 5), dpi=200)
+    fig.suptitle("DQN Results")
+    ax[0].plot(values, label='score per run')
+    ax[0].axhline(195, c='red', ls='--', label='goal')
+    ax[0].set_xlabel('Episodes')
+    ax[0].set_ylabel('Reward')
+    x = range(len(values))
+    ax[0].legend()
+
+    # Calculate the trend
+    try:
+        z = np.polyfit(x, values, 1)
+        p = np.poly1d(z)
+        ax[0].plot(x, p(x), "--", label='trend')
+    except:
+        print('')
+
+    # Plot the histogram of results
+    ax[1].hist(values[-50:])
+    ax[1].axvline(195, c='red', label='goal')
+    ax[1].set_xlabel('Scores for last 50 Episodes')
+    ax[1].set_ylabel('Frequency')
+    ax[1].legend()
+    plt.show()
 
 
 if __name__ == "__main__":
