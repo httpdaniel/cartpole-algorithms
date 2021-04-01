@@ -41,8 +41,9 @@ def main():
         if ep == episodes-1:
             end_time = time.time()
             time_taken = end_time - start_time
+            av_reward = sum(final)/(ep+1)
             plot_results(final)
-            get_results(total_reward, ep, time_taken)
+            get_results(total_reward, ep+1, av_reward, time_taken)
             break
 
 
@@ -76,16 +77,18 @@ def plot_results(values):
 
 
 # Export results to csv
-def get_results(total_reward, ep, time_taken):
+def get_results(total_reward, ep, av_reward, time_taken):
     minutes = time_taken/60
     minutes = '%.2f' % minutes
 
     res = {'Final Reward': total_reward,
            'Number of episodes': ep,
+           'Average Reward': av_reward,
            'Time Taken (Minutes)': minutes
            }
 
-    res_df = pd.DataFrame([res], columns=['Final Reward', 'Number of episodes', 'Time Taken (Minutes)'])
+    res_df = pd.DataFrame([res], columns=['Final Reward', 'Number of episodes', 'Average Reward', 'Time Taken (Minutes)'
+                                          ])
     res_df.to_csv('../results/baseline-results.csv', index=False, encoding='utf-8')
 
 
