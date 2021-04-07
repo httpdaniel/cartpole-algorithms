@@ -17,11 +17,13 @@ GAMMA = 0.95
 LEARNING_RATE = 0.005
 
 BATCH_SIZE = 32
-MEMORY_SIZE = 100000
+MEMORY_SIZE = 1000000
 
 EPSILON = 1.0
 EPSILON_MIN = 0.01
 EPSILON_DECAY = 0.995
+
+EPISODES_TO_SOLVE = 100
 
 
 class DQN:
@@ -38,7 +40,7 @@ class DQN:
         model.add(Dense(32, activation='relu'))
         model.add(Dense(16, activation='relu'))
         model.add(Dense(self.action_space, activation='linear'))
-        model.compile(loss='mse', optimizer=Adam(LEARNING_RATE))
+        model.compile(loss='mse', optimizer=Adam(lr=LEARNING_RATE))
         return model
 
     # Get next action to take
@@ -46,10 +48,10 @@ class DQN:
         state = np.reshape(state, [1, self.state_space])
         self.exploration_rate *= EPSILON_DECAY
         self.exploration_rate = max(self.exploration_rate, EPSILON_MIN)
-        if np.random.random() < self.exploration_rate:
-            return random.randint(0, self.action_space - 1)
-        q_value = self.predict(state)[0]
-        return np.argmax(q_value)
+        if np.random.rand() < self.exploration_rate:
+            return random.randrange(self.action_space)
+        q_value = self.predict(state)
+        return np.argmax(q_value[0])
 
     # Fit the model
     def train(self, states, targets):
@@ -66,10 +68,12 @@ class ReplayBuffer:
 
     # Save details of last step
     def save(self, state, action, reward, next_state, done):
-        self.buffer.append([state, action, reward, next_state, done])
+        self.buffer.append((state, action, reward, next_state, done))
 
     # Randomly sample from buffer
     def sample(self):
+        if len(self.buffer) < BATCH_SIZE:
+            return
         sample = random.sample(self.buffer, BATCH_SIZE)
         states, actions, rewards, next_states, done = map(np.asarray, zip(*sample))
         states = np.array(states)
@@ -131,24 +135,21 @@ class CartpoleAgent:
             print('Episode{} Reward={} Count={}'.format(ep, total_reward, reward_count))
             final.append(total_reward)
 
-            # Check for convergence - reward greater than 195 for 100 iterations in a row
-            if total_reward >= 195:
-                reward_count = reward_count + 1
-            else:
-                reward_count = 0
-            if reward_count >= 100:
-                end_time = time.time()
-                time_taken = end_time - start_time
-                av_reward = sum(final)/(ep+1)
-                plot_results(final)
-                get_results(total_reward, ep+1, av_reward, time_taken)
-                break
+            # Check for convergence - average reward of 195 after 100 iterations
+            if len(final) > EPISODES_TO_SOLVE:
+                if np.mean(final[-100:]) >= 195:
+                    end_time = time.time()
+                    time_taken = end_time - start_time
+                    av_reward = np.mean(final[-100:])
+                    plot_results(final[-100:])
+                    get_results(total_reward, ep - 100, av_reward, time_taken)
+                    break
 
 
 def main():
     env = gym.make('CartPole-v1')
     agent = CartpoleAgent(env)
-    agent.train(max_episodes=1000)
+    agent.train(max_episodes=100000)
 
 
 # Plot results for each iteration
