@@ -13,6 +13,7 @@ def pid(P, I, D):
     current_state = cartpole_env.reset()
     done = False
     total_reward = 0
+    final = []
     goal_state = np.array([0, 0, 0, 0])
     for episode in range(20):
         total_reward = 0
@@ -32,7 +33,36 @@ def pid(P, I, D):
             current_state, reward, done, debug_info = cartpole_env.step(action.astype(np.int32))
             total_reward += reward
             previous_error = error
-
+        
+        final.append(total_reward)
+        
+        
+        if total_reward >= 195:
+            reward_count = reward_count + 1
+        else:
+            reward_count = 0
+        if reward_count >= 100:
+            av_reward = sum(final)/(episode+1)
+            cartpole_env.close()
+            return {
+                "total_reward": total_reward,
+                "error": error,
+                "episode": episode+1,
+                "av_reward": av_reward,
+                "final": final,
+            }
+    
+    av_reward = sum(final)/(episode+1)
     cartpole_env.close()
+    return {
+        "total_reward": total_reward,
+        "error": error,
+        "episode": episode+1,
+        "av_reward": av_reward,
+        "final": final
+    }
+    
+
+
 
 pid(P = 1, I = 0.1, D = 0.5)
