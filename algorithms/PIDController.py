@@ -15,34 +15,51 @@ def gradient_descent(learning_rate = 0.05, epochs = 1000):
     time_taken = 0
     final = 0
     prev_reward = None
-   
-    P, I, D = random.uniform(0, 1), random.uniform(0, 1), random.uniform(0, 1)
-    for i in range(epochs):
-        start_time = time.time()
-        reward = pid(P, I, D)
+    
+    for _ in range(10):
+        P, I, D = random.uniform(0, 1), random.uniform(0, 1), random.uniform(0, 1)
 
-        P = P - (learning_rate * reward["error"][0])
-        I = I - (learning_rate * reward["error"][1])
-        D = D - (learning_rate * reward["error"][2])
-        end_time = time.time()
-        
-        if not best_pid or best_pid["reward"] < reward["total_reward"]:
-            time_taken = end_time - start_time
-            best_pid = {
-                "P": P,
-                "I": I,
-                "D": D,
-                "reward": reward["total_reward"],
-                "time_taken": time_taken
-            }
-            total_reward = reward["total_reward"]
-            av_reward = reward["av_reward"]
-            episode = reward["episode"]
-            final = reward["final"]
-        prev_reward = reward
-        if reward["total_reward"] >=  1000:
-            break
-    print(best_pid)        
+        history = []
+        for i in range(epochs):
+            start_time = time.time()
+            reward = pid(P, I, D)
+            p_temp = P - (learning_rate * reward["error"][0])
+            i_temp = I - (learning_rate * reward["error"][1])
+            d_temp = D - (learning_rate * reward["error"][2])
+
+            if p_temp > 0 and p_temp < 1:
+                P = P - (learning_rate * reward["error"][0])
+            
+            if i_temp > 0 and i_temp < 1:
+                I = I - (learning_rate * reward["error"][1])
+
+            if d_temp > 0 and d_temp < 1:
+                D = D - (learning_rate * reward["error"][2])
+
+            end_time = time.time()
+            
+            if not best_pid or best_pid["reward"] < reward["total_reward"]:
+                time_taken = end_time - start_time
+                best_pid = {
+                    "P": P,
+                    "I": I,
+                    "D": D,
+                    "reward": reward["total_reward"],
+                    "time_taken": time_taken
+                }
+                total_reward = reward["total_reward"]
+                av_reward = reward["av_reward"]
+                episode = reward["episode"]
+                final = reward["final"]
+                
+            prev_reward = reward
+            if reward["total_reward"] >=  1000:
+                break
+            
+            if len(history) > 200 and np.array_equal(np.gradient(history[len(history)-200:]), [0 for i in range(200)]):
+                break
+            history.append(reward["total_reward"])
+        print("reward", reward["total_reward"])
           
 
 
