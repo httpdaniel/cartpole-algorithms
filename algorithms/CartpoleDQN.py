@@ -1,16 +1,25 @@
 # Import packages
+import os
+os.environ['PYTHONHASHSEED']=str(7)
 import gym
 import random
 import time
 import pandas as pd
 import numpy as np
 import matplotlib.pyplot as plt
-
+import tensorflow as tf
 from collections import deque
 from keras.models import Sequential
 from keras.layers import Dense, Input
 from keras.optimizers import Adam
 from tqdm import tqdm
+random.seed(7)
+np.random.seed(7)
+tf.random.set_seed(7)
+
+
+
+
 
 # Hyperparameters
 GAMMA = 0.95
@@ -90,6 +99,7 @@ class ReplayBuffer:
 class CartpoleAgent:
     def __init__(self, env):
         self.env = env
+        self.env.seed(7)
         self.state_space = self.env.observation_space.shape[0]
         self.action_space = self.env.action_space.n
 

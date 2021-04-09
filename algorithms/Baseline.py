@@ -6,11 +6,12 @@ import numpy as np
 import pandas as pd
 import matplotlib.pyplot as plt
 from tqdm import tqdm
-
+random.seed(7)
 
 class CartpoleAgent:
     def __init__(self, env):
         self.env = env
+        self.env.seed(7)
         self.action_space = self.env.action_space.n
 
     # Select random action from action space
