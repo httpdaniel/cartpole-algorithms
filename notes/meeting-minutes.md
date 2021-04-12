@@ -66,3 +66,27 @@
 ### Action Items
 * The group members are going to continue the implementation of each algorithm.
 * The LaTeX document will be set up on Overleaf.
+
+
+
+# Meeting Minutes - Week 4
+
+**Date:** Friday April 9th, 2021\
+**Time:** 12:00PM
+
+### Agenda Items
+* Discuss final results
+* Discuss project report
+
+### Minutes
+**Agenda Item 1 - Discuss final results**
+* Since all algorithms have been finalised, the group members discussed the results found for each.
+* The following 4 metrics were used: Final  reward, Average reward, Episodes taken, Time taken
+
+**Agenda Item 2 - Discuss project report**
+* The group members discussed the final report and how to delegate the work.
+* Members also reviewed the first draft of the introduction and problem description. 
+
+### Action Items
+* Each group member will provide a description of the algorithm they implemented on the report.
+* Final results will also be added to the report. 
