@@ -25,6 +25,7 @@ class CartPoleGenetic:
         self.convergence_count = 0
         self.mean_crossover = mean_crossover
         self.scores = []
+        self.best_scores = []
         self.solved = False
         self.init_population()
 
@@ -116,7 +117,8 @@ class CartPoleGenetic:
 
         self.mean_score = np.mean(fitness_score_list)
         self.scores.append(self.mean_score)
-        print(self.mean_score, np.mean(self.scores[-100:]))
+        self.best_scores.append(np.max(fitness_score_list))
+        print(self.mean_score, self.best_scores[-1], np.mean(self.scores[-100:]))
 
         top_performers_number = int(self.elitism * self.population_size)
         top_performers = [self.population[i] for i in range(top_performers_number)]
@@ -170,5 +172,13 @@ plt.plot([i for i in range(len(cart_pole_genetic.scores))], cart_pole_genetic.sc
 plt.xlabel("Episodes")
 plt.ylabel("Mean Population Score by episode")
 plt.legend()
-plt.savefig('results/ga-plot')
+plt.savefig('results/ga-plot-mean')
+plt.clf()
+
+# Save Chart to file
+plt.plot([i for i in range(len(cart_pole_genetic.best_scores))], cart_pole_genetic.best_scores, label='Scores')
+plt.xlabel("Episodes")
+plt.ylabel("Mean Population Score by episode")
+plt.legend()
+plt.savefig('results/ga-plot-best')
 plt.clf()
