@@ -159,14 +159,16 @@ print('time taken', time_taken)
 # Save results to file
 if not os.path.exists('results'):
     os.makedirs('results')
-df = pd.DataFrame(data=[[cart_pole_genetic.mean_score, episodes, cart_pole_genetic.mean_score, time_taken/60]], index=None, 
+
+best_individual = np.max(cart_pole_genetic.train_generation())
+df = pd.DataFrame(data=[[best_individual, episodes, np.mean(cart_pole_genetic.scores[-100:]), time_taken/60]], index=None, 
                                     columns=['Final Reward', 'Number Of Episodes', 'Average Reward', 'Time Taken'])
 df.to_csv('results/ga-results.csv', index=False)
 
 # Save Chart to file
 plt.plot([i for i in range(len(cart_pole_genetic.scores))], cart_pole_genetic.scores, label='Scores')
 plt.xlabel("Episodes")
-plt.ylabel("Mean Score of the last 100 episodes")
+plt.ylabel("Mean Population Score by episode")
 plt.legend()
 plt.savefig('results/ga-plot')
 plt.clf()
