@@ -1,6 +1,10 @@
 import gym
 import numpy as np
 import random
+import pandas as pd
+from time import time
+import matplotlib.pyplot as plt
+import os
 
 class CartPoleGenetic:
     def __init__(self, population_size=10, weight_spread=2, crossover_individuals=4,
@@ -110,9 +114,9 @@ class CartPoleGenetic:
         else:
             self.convergence_count = 0
 
-        mean_score = np.mean(fitness_score_list)
-        self.scores.append(mean_score)
-        print(mean_score, np.mean(self.scores[-100:]))
+        self.mean_score = np.mean(fitness_score_list)
+        self.scores.append(self.mean_score)
+        print(self.mean_score, np.mean(self.scores[-100:]))
 
         top_performers_number = int(self.elitism * self.population_size)
         top_performers = [self.population[i] for i in range(top_performers_number)]
@@ -138,9 +142,31 @@ class CartPoleGenetic:
 iteration_to_converge = 100
 iteration_count = 0
 
+start = time()
+
 cart_pole_genetic = CartPoleGenetic(population_size=10, mutation_chance=0.1, mutation_value=1, render_result=False, weight_spread=2, mean_crossover = True)
 while not cart_pole_genetic.solved:
     iteration_count += 1
     cart_pole_genetic.create_next_generation()
 
-print('iteration count:', iteration_count-100)
+end = time()
+time_taken = end - start
+
+episodes = iteration_count-100
+print('iteration count:', episodes)
+print('time taken', time_taken)
+
+# Save results to file
+if not os.path.exists('genetic_algorithm'):
+    os.makedirs('genetic_algorithm')
+df = pd.DataFrame(data=[[cart_pole_genetic.mean_score, episodes, cart_pole_genetic.mean_score, time_taken/60]], index=None, 
+                                    columns=['Final Reward', 'Number Of Episodes', 'Average Reward', 'Time Taken'])
+df.to_csv('genetic_algorithm/results.csv', index=False)
+
+# Save Chart to file
+plt.plot([i for i in range(len(cart_pole_genetic.scores))], cart_pole_genetic.scores, label='Scores')
+plt.xlabel("Episodes")
+plt.ylabel("Mean Score of the last 100 episodes")
+plt.legend()
+plt.savefig('genetic_algorithm/chart')
+plt.clf()
