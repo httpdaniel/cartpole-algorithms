@@ -157,16 +157,16 @@ print('iteration count:', episodes)
 print('time taken', time_taken)
 
 # Save results to file
-if not os.path.exists('genetic_algorithm'):
-    os.makedirs('genetic_algorithm')
+if not os.path.exists('results'):
+    os.makedirs('results')
 df = pd.DataFrame(data=[[cart_pole_genetic.mean_score, episodes, cart_pole_genetic.mean_score, time_taken/60]], index=None, 
                                     columns=['Final Reward', 'Number Of Episodes', 'Average Reward', 'Time Taken'])
-df.to_csv('genetic_algorithm/results.csv', index=False)
+df.to_csv('results/ga-results.csv', index=False)
 
 # Save Chart to file
 plt.plot([i for i in range(len(cart_pole_genetic.scores))], cart_pole_genetic.scores, label='Scores')
 plt.xlabel("Episodes")
 plt.ylabel("Mean Score of the last 100 episodes")
 plt.legend()
-plt.savefig('genetic_algorithm/chart')
+plt.savefig('results/ga-plot')
 plt.clf()
