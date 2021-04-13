@@ -118,7 +118,7 @@ def pid(P, I, D):
     reward_count = 0
 
     goal_state = np.array([0, 0, 0, 0])
-    for episode in range(20):
+    for episode in range(105):
         total_reward = 0
         current_state = cartpole_env.reset()
         integral = 0
