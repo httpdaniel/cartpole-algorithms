@@ -80,9 +80,9 @@ class CartPoleGenetic:
         iteration_count = 0
         start = time()
 
-        while not cart_pole_genetic.solved:
+        while not self.solved:
             iteration_count += 1
-            cart_pole_genetic.create_next_generation()
+            self.create_next_generation()
 
         end = time()
         self.time_taken = end - start
@@ -189,26 +189,30 @@ class CartPoleGenetic:
         if(len(self.scores) >= 100):
             if np.mean(self.scores[-100:]) >= self.convergence_condition:
                 self.solved = True
-        
-cart_pole_genetic = CartPoleGenetic(population_size=10, mutation_chance=0.1, mutation_value=1, render_result=False, weight_spread=2, mean_crossover = True)
-cart_pole_genetic.train()
-cart_pole_genetic.save_results()
-cart_pole_genetic.plot_results()
-plt.savefig('results/ga-plot')
-plt.clf()
 
-# Save Chart to file
-plt.plot([i for i in range(len(cart_pole_genetic.scores))], cart_pole_genetic.scores, label='Scores')
-plt.xlabel("Episodes")
-plt.ylabel("Mean Population Score by episode")
-plt.legend()
-plt.savefig('results/ga-plot-mean')
-plt.clf()
+def main():      
+    cart_pole_genetic = CartPoleGenetic(population_size=10, mutation_chance=0.1, mutation_value=1, render_result=False, weight_spread=2, mean_crossover = True)
+    cart_pole_genetic.train()
+    cart_pole_genetic.save_results()
+    cart_pole_genetic.plot_results()
+    plt.savefig('results/ga-plot')
+    plt.clf()
 
-# Save Chart to file
-plt.plot([i for i in range(len(cart_pole_genetic.best_scores))], cart_pole_genetic.best_scores, label='Scores')
-plt.xlabel("Episodes")
-plt.ylabel("Mean Population Score by episode")
-plt.legend()
-plt.savefig('results/ga-plot-best')
-plt.clf()
+    # Save Chart to file
+    plt.plot([i for i in range(len(cart_pole_genetic.scores))], cart_pole_genetic.scores, label='Scores')
+    plt.xlabel("Episodes")
+    plt.ylabel("Mean Population Score by episode")
+    plt.legend()
+    plt.savefig('results/ga-plot-mean')
+    plt.clf()
+
+    # Save Chart to file
+    plt.plot([i for i in range(len(cart_pole_genetic.best_scores))], cart_pole_genetic.best_scores, label='Scores')
+    plt.xlabel("Episodes")
+    plt.ylabel("Mean Population Score by episode")
+    plt.legend()
+    plt.savefig('results/ga-plot-best')
+    plt.clf()
+
+if __name__ == "__main__":
+    main()

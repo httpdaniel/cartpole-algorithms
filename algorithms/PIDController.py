@@ -64,6 +64,7 @@ def gradient_descent(learning_rate = 0.05, epochs = 200):
     time_taken = end_time - start_time
     plot_results(final)
     get_results(total_reward, episode, av_reward, time_taken)
+    return final
           
 def get_results(total_reward, ep, av_reward, time_taken):
     minutes = time_taken/60
@@ -160,6 +161,10 @@ def pid(P, I, D):
         "av_reward": av_reward,
         "final": final
     }
-    
 
-gradient_descent()
+def main():
+    gradient_descent()
+
+if __name__ == "__main__":
+    main()
+
