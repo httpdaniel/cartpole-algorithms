@@ -108,7 +108,7 @@ def plot_results(values):
     plt.show()
 
 
-def pid(P, I, D): 
+def pid(P, I, D, episodes=200): 
     cartpole_env = gym.make('CartPole-v1')
     cartpole_env._max_episode_steps = 500
     cartpole_env.seed(7)
@@ -119,7 +119,7 @@ def pid(P, I, D):
     reward_count = 0
 
     goal_state = np.array([0, 0, 0, 0])
-    for episode in range(100):
+    for episode in range(episodes):
         total_reward = 0
         current_state = cartpole_env.reset()
         integral = 0

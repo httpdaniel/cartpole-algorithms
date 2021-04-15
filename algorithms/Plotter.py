@@ -1,3 +1,6 @@
+
+import matplotlib
+matplotlib.use("TkAgg")
 from Genetic import CartPoleGenetic
 from CartpoleDQN import CartpoleAgent
 from PIDController import gradient_descent
