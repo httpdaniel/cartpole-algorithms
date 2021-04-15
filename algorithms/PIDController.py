@@ -11,7 +11,7 @@ import pandas as pd
 def sigmoid(x):
     return 1 / (1 + np.exp(-x))
 
-def gradient_descent(learning_rate = 0.05, epochs = 200):
+def gradient_descent(learning_rate = 0.05, epochs = 200, episodes=0):
     best_pid = None
     total_reward = 0
     av_reward = 0
@@ -64,6 +64,7 @@ def gradient_descent(learning_rate = 0.05, epochs = 200):
     time_taken = end_time - start_time
     plot_results(final)
     get_results(total_reward, episode, av_reward, time_taken)
+    return final
           
 def get_results(total_reward, ep, av_reward, time_taken):
     minutes = time_taken/60
@@ -107,7 +108,7 @@ def plot_results(values):
     plt.show()
 
 
-def pid(P, I, D): 
+def pid(P, I, D, episodes=200): 
     cartpole_env = gym.make('CartPole-v1')
     cartpole_env._max_episode_steps = 500
     cartpole_env.seed(7)
@@ -118,7 +119,7 @@ def pid(P, I, D):
     reward_count = 0
 
     goal_state = np.array([0, 0, 0, 0])
-    for episode in range(105):
+    for episode in range(episodes):
         total_reward = 0
         current_state = cartpole_env.reset()
         integral = 0
@@ -160,6 +161,10 @@ def pid(P, I, D):
         "av_reward": av_reward,
         "final": final
     }
-    
 
-gradient_descent()
+def main():
+    gradient_descent()
+
+if __name__ == "__main__":
+    main()
+

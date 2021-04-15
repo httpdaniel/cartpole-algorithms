@@ -153,7 +153,7 @@ class CartpoleAgent:
                     av_reward = np.mean(final[-100:])
                     plot_results(final[-100:])
                     get_results(total_reward, ep - 100, av_reward, time_taken)
-                    break
+                    return final
 
 
 def main():
@@ -204,7 +204,7 @@ def get_results(total_reward, ep, av_reward, time_taken):
 
     res_df = pd.DataFrame([res], columns=['Final Reward', 'Number of episodes', 'Average Reward', 'Time Taken (Minutes)'
                                           ])
-    res_df.to_csv('../results/dqn-results.csv', index=False, encoding='utf-8')
+    res_df.to_csv('results/dqn-results.csv', index=False, encoding='utf-8')
 
 
 if __name__ == "__main__":
