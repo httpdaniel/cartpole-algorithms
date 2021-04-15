@@ -75,6 +75,57 @@ class CartPoleGenetic:
         # I return the candidate with the highest score 
         # the population is already sorted by score, so I just return the element with the smallest index
         return min(candidates)
+    
+    def train(self):
+        iteration_count = 0
+        start = time()
+
+        while not cart_pole_genetic.solved:
+            iteration_count += 1
+            cart_pole_genetic.create_next_generation()
+
+        end = time()
+        self.time_taken = end - start
+
+        self.episodes = iteration_count-100
+        print('iteration count:', self.episodes)
+        print('time taken', self.time_taken)
+
+    def save_results(self):
+        # Save results to file
+        if not os.path.exists('results'):
+            os.makedirs('results')
+
+        best_individual = np.max(self.train_generation())
+        df = pd.DataFrame(data=[[best_individual, self.episodes, np.mean(self.scores[-100:]), self.time_taken/60]], index=None, 
+                                            columns=['Final Reward', 'Number Of Episodes', 'Average Reward', 'Time Taken'])
+        df.to_csv('results/ga-results.csv', index=False)
+
+    def plot_results(self):
+        fig, ax = plt.subplots(nrows=1, ncols=2, figsize=(12, 5), dpi=200)
+        fig.suptitle("Genetic Algorithm Results")
+        ax[0].plot(self.scores, label='score per run')
+        ax[0].axhline(195, c='red', ls='--', label='goal')
+        ax[0].set_xlabel('Episodes')
+        ax[0].set_ylabel('Reward')
+        x = range(len(self.scores))
+        ax[0].legend()
+
+        # Calculate the trend
+        try:
+            z = np.polyfit(x, self.scores, 1)
+            p = np.poly1d(z)
+            ax[0].plot(x, p(x), "--", label='trend')
+        except:
+            print('')
+
+        # Plot the histogram of results
+        ax[1].hist(self.scores[-50:])
+        ax[1].axvline(195, c='red', label='goal')
+        ax[1].set_xlabel('Scores for last 50 Episodes')
+        ax[1].set_ylabel('Frequency')
+        ax[1].legend()
+        #plt.show()
 
     def generate_crossover_individual(self):
         parent_1_index = self.select_parent()
@@ -139,33 +190,12 @@ class CartPoleGenetic:
             if np.mean(self.scores[-100:]) >= self.convergence_condition:
                 self.solved = True
         
-
-
-iteration_to_converge = 100
-iteration_count = 0
-
-start = time()
-
 cart_pole_genetic = CartPoleGenetic(population_size=10, mutation_chance=0.1, mutation_value=1, render_result=False, weight_spread=2, mean_crossover = True)
-while not cart_pole_genetic.solved:
-    iteration_count += 1
-    cart_pole_genetic.create_next_generation()
-
-end = time()
-time_taken = end - start
-
-episodes = iteration_count-100
-print('iteration count:', episodes)
-print('time taken', time_taken)
-
-# Save results to file
-if not os.path.exists('results'):
-    os.makedirs('results')
-
-best_individual = np.max(cart_pole_genetic.train_generation())
-df = pd.DataFrame(data=[[best_individual, episodes, np.mean(cart_pole_genetic.scores[-100:]), time_taken/60]], index=None, 
-                                    columns=['Final Reward', 'Number Of Episodes', 'Average Reward', 'Time Taken'])
-df.to_csv('results/ga-results.csv', index=False)
+cart_pole_genetic.train()
+cart_pole_genetic.save_results()
+cart_pole_genetic.plot_results()
+plt.savefig('results/ga-plot')
+plt.clf()
 
 # Save Chart to file
 plt.plot([i for i in range(len(cart_pole_genetic.scores))], cart_pole_genetic.scores, label='Scores')
