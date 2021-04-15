@@ -11,7 +11,7 @@ import pandas as pd
 def sigmoid(x):
     return 1 / (1 + np.exp(-x))
 
-def gradient_descent(learning_rate = 0.05, epochs = 200):
+def gradient_descent(learning_rate = 0.05, epochs = 200, episodes=0):
     best_pid = None
     total_reward = 0
     av_reward = 0
@@ -119,7 +119,7 @@ def pid(P, I, D):
     reward_count = 0
 
     goal_state = np.array([0, 0, 0, 0])
-    for episode in range(105):
+    for episode in range(100):
         total_reward = 0
         current_state = cartpole_env.reset()
         integral = 0
