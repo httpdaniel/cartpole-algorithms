@@ -11,7 +11,7 @@ import pandas as pd
 def sigmoid(x):
     return 1 / (1 + np.exp(-x))
 
-def gradient_descent(learning_rate = 0.05, epochs = 200, episodes=0):
+def gradient_descent(learning_rate = 0.05, epochs = 200, episodes=200):
     best_pid = None
     total_reward = 0
     av_reward = 0
@@ -26,7 +26,7 @@ def gradient_descent(learning_rate = 0.05, epochs = 200, episodes=0):
         history = []
         for i in range(epochs):
             
-            reward = pid(P, I, D)
+            reward = pid(P, I, D, episodes)
             p_temp = P - (learning_rate * reward["error"][0])
             i_temp = I - (learning_rate * reward["error"][1])
             d_temp = D - (learning_rate * reward["error"][2])
