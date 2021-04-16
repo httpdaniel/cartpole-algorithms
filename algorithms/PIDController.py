@@ -11,7 +11,7 @@ import pandas as pd
 def sigmoid(x):
     return 1 / (1 + np.exp(-x))
 
-def gradient_descent(learning_rate = 0.05, epochs = 200, episodes=200):
+def gradient_descent(learning_rate = 0.05, epochs = 200, episodes=110):
     best_pid = None
     total_reward = 0
     av_reward = 0
@@ -52,7 +52,7 @@ def gradient_descent(learning_rate = 0.05, epochs = 200, episodes=200):
                 av_reward = reward["av_reward"]
                 episode = reward["episode"]
                 final = reward["final"]
-                
+                time_taken += reward["convergence_time"]
             prev_reward = reward
             if reward["total_reward"] >=  500:
                 break
@@ -60,11 +60,8 @@ def gradient_descent(learning_rate = 0.05, epochs = 200, episodes=200):
             if len(history) > 100 and np.array_equal(np.gradient(history[len(history)-100:]), [0 for i in range(100)]):
                 break
             history.append(reward["total_reward"])
-    end_time = time.time()
-    time_taken = end_time - start_time
     plot_results(final)
     get_results(total_reward, episode, av_reward, time_taken)
-    return final
           
 def get_results(total_reward, ep, av_reward, time_taken):
     minutes = time_taken/60
@@ -108,7 +105,7 @@ def plot_results(values):
     plt.show()
 
 
-def pid(P, I, D, episodes=200): 
+def pid(P, I, D, episodes=110): 
     cartpole_env = gym.make('CartPole-v1')
     cartpole_env._max_episode_steps = 500
     cartpole_env.seed(7)
@@ -117,6 +114,9 @@ def pid(P, I, D, episodes=200):
     total_reward = 0
     final = []
     reward_count = 0
+    agent_converged = False
+    convergence_time = 0
+    start_time = time.time()
 
     goal_state = np.array([0, 0, 0, 0])
     for episode in range(episodes):
@@ -140,31 +140,28 @@ def pid(P, I, D, episodes=200):
         
         final.append(total_reward)
         
-        if len(final) > 100:
+        if len(final) > 100 and not agent_converged:
             if np.mean(final[-100:]) >= 195:
+                agent_converged = True
                 av_reward = sum(final)/(episode+1)
-                cartpole_env.close()
-                return {
-                    "total_reward": total_reward,
-                    "error": error,
-                    "episode": episode+1,
-                    "av_reward": av_reward,
-                    "final": final,
-                }
+                end_time = time.time()
+                convergence_time = end_time - start_time
 
-    av_reward = sum(final)/(episode+1)
+    if not agent_converged:
+        av_reward = sum(final)/(episode+1)
+        end_time = time.time()
+        convergence_time = end_time - start_time
+    
     cartpole_env.close()
     return {
         "total_reward": total_reward,
         "error": error,
         "episode": episode+1,
         "av_reward": av_reward,
-        "final": final
+        "final": final,
+        "convergence_time": convergence_time
     }
+    
 
-def main():
-    gradient_descent()
-
-if __name__ == "__main__":
-    main()
+gradient_descent()
 
