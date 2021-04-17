@@ -27,7 +27,6 @@ def gradient_descent(learning_rate = 0.05, epochs = 200, episodes=110):
         P, I, D = rnd.uniform(0, 1), rnd.uniform(0, 1), rnd.uniform(0, 1)
         history = []
         for i in range(epochs):
-            
             reward = pid(P, I, D, episodes)
             p_temp = P - (learning_rate * reward["error"][0])
             i_temp = I - (learning_rate * reward["error"][1])
@@ -54,7 +53,7 @@ def gradient_descent(learning_rate = 0.05, epochs = 200, episodes=110):
                 av_reward = reward["av_reward"]
                 episode = reward["episode"]
                 final = reward["final"]
-                time_taken += reward["convergence_time"]
+            time_taken += reward["convergence_time"]
             prev_reward = reward
             if reward["total_reward"] >=  500:
                 break
