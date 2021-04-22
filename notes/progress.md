@@ -17,3 +17,17 @@
 * The initial draft for the introduction and problem description have been written in the final report.
 
 * The results have been added to the report.
+
+## Week 5
+
+* All algorithms descriptions have been added to the project report. 
+
+* The final results and plots as well as a discussion has been added to the report. 
+
+* The conclusions and future work has been written. 
+
+## Week 6
+
+* The background research section of the report has been finalised. 
+
+* Members have started on the final presentation.

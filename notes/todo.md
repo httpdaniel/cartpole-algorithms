@@ -36,3 +36,19 @@
 * Add results and plots to report.
 * Begin writing the background research for the project.
 
+## Week 5
+
+### All Members
+* Finalise the background research section of the report.
+* Provide a discussion on the results. 
+* Fill in the conclusions and future work.
+
+## Week 6
+
+### All Members
+* Finalise the project report. 
+* Fill in the slides for the presentation.
+* Record the presenation. 
+
+
+
