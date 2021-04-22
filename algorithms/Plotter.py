@@ -4,10 +4,14 @@ matplotlib.use("TkAgg")
 from Genetic import CartPoleGenetic
 from CartpoleDQN import CartpoleAgent
 from PIDController import gradient_descent
+from Baseline import main
 import matplotlib.pyplot as plt
 import gym
 
 episodes = 110
+
+# Baseline
+baseline_values = main(episodes)
 
 # Get values from PID algorithm
 PID_values = gradient_descent(episodes=episodes)
@@ -23,6 +27,7 @@ cart_pole_genetic.train(episodes=episodes)
 cart_pole_genetic.save_results()
 
 # Plot
+plt.plot([i for i in range(episodes)], baseline_values, label='Baseline Scores')
 plt.plot([i for i in range(episodes)], PID_values, label='PID Scores')
 plt.plot([i for i in range(episodes)], DQN_values, label='DQN Scores')
 plt.plot([i for i in range(episodes)], cart_pole_genetic.best_scores, label='Genetic Scores')

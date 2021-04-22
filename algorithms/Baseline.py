@@ -6,7 +6,9 @@ import numpy as np
 import pandas as pd
 import matplotlib.pyplot as plt
 from tqdm import tqdm
-random.seed(7)
+
+rnd = random.Random()
+rnd.seed(7)
 
 class CartpoleAgent:
     def __init__(self, env):
@@ -16,14 +18,13 @@ class CartpoleAgent:
 
     # Select random action from action space
     def update_action(self):
-        action = random.randint(0, self.action_space - 1)
+        action = rnd.randint(0, self.action_space - 1)
         return action
 
 
-def main():
+def main(episodes=200):
     env = gym.make('CartPole-v1')
     agent = CartpoleAgent(env)
-    episodes = 200
 
     final = []
     start_time = time.time()
@@ -45,7 +46,7 @@ def main():
             av_reward = sum(final)/(ep+1)
             plot_results(final)
             get_results(total_reward, ep+1, av_reward, time_taken)
-            break
+            return final
 
 
 # Plot results for each iteration
@@ -90,7 +91,7 @@ def get_results(total_reward, ep, av_reward, time_taken):
 
     res_df = pd.DataFrame([res], columns=['Final Reward', 'Number of episodes', 'Average Reward', 'Time Taken (Minutes)'
                                           ])
-    res_df.to_csv('../results/baseline-results.csv', index=False, encoding='utf-8')
+    res_df.to_csv('results/baseline-results.csv', index=False, encoding='utf-8')
 
 
 if __name__ == "__main__":
