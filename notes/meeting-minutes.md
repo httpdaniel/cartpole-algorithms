@@ -139,3 +139,18 @@
 ### Action Items
 * Each group member will fill in a slide of the presentation.
 * All members will give a final read through of the report and make any necessary changes. 
+
+
+
+# Meeting Minutes - Week 7
+
+**Date:** Monday April 26th, 2021\
+**Time:** 12:00PM
+
+### Agenda Items
+* Submit project
+
+### Minutes
+**Agenda Item 1 - Submit project**
+* Since the last meeting, the report has been finalised, and the presentation recorded.
+* During this meeting the members uploaded the presentation and submitted all of the required documents.
