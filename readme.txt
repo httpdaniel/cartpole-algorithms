@@ -19,13 +19,15 @@ Daniel Farrell
 Joshua Cassidy
 - Paired with Claire on PID Controller with Gradient Descent
 - Partial work on PID Controller documentation
+- Partial work on the Conclusions part
 - Discussed results
 - Created a piece on presentation
 - Proofread and restructured the essay
 
-Matteo Briscani
+Matteo Bresciani
 - Created Genetic Algorithm
 - Wrote about Genetic Algorithm
-- Created performance chart
-- Created a piece on presentation
-- Put presentation together
+- Partial work on the Conclusions part
+- Created a performance chart that compares all the algorithms
+- Created the piece about Genetic Algorithm on presentation
+- Put the presentation together
