@@ -24,14 +24,6 @@ The following steps detail how to run the Artificial Intelligence Project:
 5. Run python Genetic.py to see the results of the Genetic alone
 6. Run python PIDController.py to see the results of the PID controller alone
 
-## Project Dependencies:
-1. Java (Version 8 or greater)
-2. Maven (Version 3.6.0)
-3. Python3 (Note: ensure you have python mapped to the python3 environment variable and specific version of all the Python dependencies can be found in requirements.txt)
-4. Matplotlib (Note: ensure that your operating system is able to use the TKAgg function)
-5. pip (Note: ensure you have pip mapped to the pip3 environment variable)
-6. Bash (Version 3.2)
-
 ## Project
 MSc Computer Science - Intelligent Systems
 Module:  CS7IS2 - Artificial Intelligence
