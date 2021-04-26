@@ -48,7 +48,7 @@
 ### All Members
 * Finalise the project report. 
 * Fill in the slides for the presentation.
-* Record the presenation. 
+* Record the presentation. 
 
 
 
