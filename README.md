@@ -2,6 +2,11 @@
 This repository contains a collection of algorithms used to solve the Cartpole environment on [OpenAI Gym](https://gym.openai.com/envs/CartPole-v1/).
 
 ## Cartpole
+
+<p align="center">
+  <img src="https://github.com/httpdaniel/cartpole-algorithms/blob/main/assets/cartpole-initial.png" width="500">
+</p>
+
 Cartpole balancing is a control problem where the goal is to balance a pole upright on the top of a cart by applying the appropriate forces left and right.
 
 States:
