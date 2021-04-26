@@ -2,11 +2,13 @@ import gym
 import numpy as np
 import random
 import time
-random.seed(7)
 import matplotlib
 matplotlib.use("TkAgg")
 import matplotlib.pyplot as plt
 import pandas as pd
+
+rnd = random.Random()
+rnd.seed(7)
 
 def sigmoid(x):
     return 1 / (1 + np.exp(-x))
@@ -22,7 +24,7 @@ def gradient_descent(learning_rate = 0.05, epochs = 200, episodes=110):
     start_time = time.time()
 
     for _ in range(10):
-        P, I, D = random.uniform(0, 1), random.uniform(0, 1), random.uniform(0, 1)
+        P, I, D = rnd.uniform(0, 1), rnd.uniform(0, 1), rnd.uniform(0, 1)
         history = []
         for i in range(epochs):
             reward = pid(P, I, D, episodes)
@@ -61,6 +63,7 @@ def gradient_descent(learning_rate = 0.05, epochs = 200, episodes=110):
             history.append(reward["total_reward"])
     plot_results(final)
     get_results(total_reward, episode, av_reward, time_taken)
+    return final
           
 def get_results(total_reward, ep, av_reward, time_taken):
     minutes = time_taken/60
@@ -161,6 +164,5 @@ def pid(P, I, D, episodes=110):
         "convergence_time": convergence_time
     }
     
-
-gradient_descent()
-
+if __name__ == "__main__":
+    gradient_descent()

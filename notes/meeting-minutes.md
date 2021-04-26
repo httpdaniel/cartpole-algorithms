@@ -89,4 +89,53 @@
 
 ### Action Items
 * Each group member will provide a description of the algorithm they implemented on the report.
-* Final results will also be added to the report. 
+* Final results will also be added to the report.
+
+
+
+# Meeting Minutes - Week 5
+
+**Date:** Friday April 16th, 2021\
+**Time:** 12:00PM
+
+### Agenda Items
+* Discuss algorithms and results report section
+* Discuss background research
+
+### Minutes
+**Agenda Item 1 - Discuss algorithms and results report section**
+* Since the last meeting, all members have added their algorithm descriptions to the report. 
+* The results table and a brief description has been added to the report. 
+* All members went through these sections together to ensure they are sufficient.
+
+**Agenda Item 2 - Discuss background research**
+* Before carrying out the implementation, all members resourced some previous research papers that were relevant to the work being carried out in this project. 
+* The members discussed how we would write out this section and how the work would be split up.
+
+### Action Items
+* Each group member will write a piece on the background research surrounding their implemented algorithm.
+* The results and conclusion section will be filled out before the next meeting.
+
+
+
+# Meeting Minutes - Week 6
+
+**Date:** Thursday April 22nd, 2021\
+**Time:** 2:00PM
+
+### Agenda Items
+* Discuss project report
+* Discuss presentation
+
+### Minutes
+**Agenda Item 1 - Discuss project report**
+* Since the last meeting, the final draft of the project report has been completed.
+* All members went through this together and noted any sections that need to be amended before submission. 
+
+**Agenda Item 2 - Discuss presentation**
+* For the final submission the team needs to record a 5 minute long presentation. 
+* During the meeting we set up the initial presentation slides to be filled out by tomorrow so that the presentation can be recorded. 
+
+### Action Items
+* Each group member will fill in a slide of the presentation.
+* All members will give a final read through of the report and make any necessary changes. 

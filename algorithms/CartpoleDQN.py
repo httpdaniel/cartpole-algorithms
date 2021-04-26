@@ -1,6 +1,6 @@
 # Import packages
 import os
-os.environ['PYTHONHASHSEED']=str(7)
+os.environ['PYTHONHASHSEED'] = str(7)
 import gym
 import random
 import time
@@ -16,10 +16,6 @@ from tqdm import tqdm
 random.seed(7)
 np.random.seed(7)
 tf.random.set_seed(7)
-
-
-
-
 
 # Hyperparameters
 GAMMA = 0.95
@@ -123,7 +119,7 @@ class CartpoleAgent:
             self.model.train(states, targets)
 
     # Train the model for x iterations
-    def train(self, max_episodes):
+    def train(self, max_episodes, episodes=0):
         start_time = time.time()
         reward_count = 0
         final = []
@@ -131,14 +127,14 @@ class CartpoleAgent:
             done, total_reward = False, 0
             state = self.env.reset()
             while not done:
-                if ep % 10 == 0:
-                    self.env.render()
+                # if ep % 10 == 0:
+                #     self.env.render()
                 action = self.model.update_action(state)
                 next_state, reward, done, _ = self.env.step(action)
                 self.buffer.save(state, action, reward * 0.01, next_state, done)
                 total_reward += reward
                 state = next_state
-            self.env.close()
+            # self.env.close()
             if self.buffer.size() >= BATCH_SIZE:
                 self.replay()
             self.update_weights()
@@ -146,7 +142,7 @@ class CartpoleAgent:
             final.append(total_reward)
 
             # Check for convergence - average reward of 195 after 100 iterations
-            if len(final) > EPISODES_TO_SOLVE:
+            if len(final) > EPISODES_TO_SOLVE and len(final) >= episodes:
                 if np.mean(final[-100:]) >= 195:
                     end_time = time.time()
                     time_taken = end_time - start_time

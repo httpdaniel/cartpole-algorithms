@@ -12,7 +12,8 @@ class CartPoleGenetic:
                         random_seed=0, elitism=0.2, convergence_condition=195, render_result=True, mean_crossover=False):
         self.env = gym.make("CartPole-v1")
         self.env.seed(random_seed)
-        random.seed(random_seed)
+        self.rnd = random.Random()
+        self.rnd.seed(random_seed)
 
         self.population_size = population_size
         self.weight_spread = weight_spread
@@ -33,7 +34,7 @@ class CartPoleGenetic:
         self.population = []
 
         for _ in range(self.population_size):
-            random_weights = [random.uniform(-self.weight_spread/2, self.weight_spread/2) for _ in range(4)]
+            random_weights = [self.rnd.uniform(-self.weight_spread/2, self.weight_spread/2) for _ in range(4)]
             self.population.append(random_weights)
 
     @staticmethod
@@ -69,18 +70,18 @@ class CartPoleGenetic:
     def select_parent(self):
         candidates = []
         while len(candidates) < self.crossover_individuals:
-            candidate = random.randrange(self.population_size)
+            candidate = self.rnd.randrange(self.population_size)
             if(candidate not in candidates):
                 candidates.append(candidate)
         # I return the candidate with the highest score 
         # the population is already sorted by score, so I just return the element with the smallest index
         return min(candidates)
     
-    def train(self):
+    def train(self, episodes=0):
         iteration_count = 0
         start = time()
 
-        while not self.solved:
+        while not self.solved or len(self.best_scores) < episodes:
             iteration_count += 1
             self.create_next_generation()
 
@@ -97,30 +98,30 @@ class CartPoleGenetic:
             os.makedirs('results')
 
         best_individual = np.max(self.train_generation())
-        df = pd.DataFrame(data=[[best_individual, self.episodes, np.mean(self.scores[-100:]), self.time_taken/60]], index=None, 
+        df = pd.DataFrame(data=[[best_individual, self.episodes, np.mean(self.best_scores[-100:]), self.time_taken/60]], index=None, 
                                             columns=['Final Reward', 'Number Of Episodes', 'Average Reward', 'Time Taken'])
         df.to_csv('results/ga-results.csv', index=False)
 
     def plot_results(self):
         fig, ax = plt.subplots(nrows=1, ncols=2, figsize=(12, 5), dpi=200)
         fig.suptitle("Genetic Algorithm Results")
-        ax[0].plot(self.scores, label='score per run')
+        ax[0].plot(self.best_scores, label='score per run')
         ax[0].axhline(195, c='red', ls='--', label='goal')
         ax[0].set_xlabel('Episodes')
         ax[0].set_ylabel('Reward')
-        x = range(len(self.scores))
+        x = range(len(self.best_scores))
         ax[0].legend()
 
         # Calculate the trend
         try:
-            z = np.polyfit(x, self.scores, 1)
+            z = np.polyfit(x, self.best_scores, 1)
             p = np.poly1d(z)
             ax[0].plot(x, p(x), "--", label='trend')
         except:
             print('')
 
         # Plot the histogram of results
-        ax[1].hist(self.scores[-50:])
+        ax[1].hist(self.best_scores[-50:])
         ax[1].axvline(195, c='red', label='goal')
         ax[1].set_xlabel('Scores for last 50 Episodes')
         ax[1].set_ylabel('Frequency')
@@ -150,8 +151,8 @@ class CartPoleGenetic:
     def mutate_generation(self):
         for weights in self.population:
             for i in range(4):
-                if random.uniform(0, 1) < self.mutation_chance:
-                    weights[i] += random.uniform(-self.mutation_value/2, self.mutation_value/2)
+                if self.rnd.uniform(0, 1) < self.mutation_chance:
+                    weights[i] += self.rnd.uniform(-self.mutation_value/2, self.mutation_value/2)
 
     def create_next_generation(self):
         fitness_score_list = self.train_generation()
@@ -169,7 +170,7 @@ class CartPoleGenetic:
         self.mean_score = np.mean(fitness_score_list)
         self.scores.append(self.mean_score)
         self.best_scores.append(np.max(fitness_score_list))
-        print(self.mean_score, self.best_scores[-1], np.mean(self.scores[-100:]))
+        print(self.mean_score, self.best_scores[-1], np.mean(self.best_scores[-100:]))
 
         top_performers_number = int(self.elitism * self.population_size)
         top_performers = [self.population[i] for i in range(top_performers_number)]
@@ -186,8 +187,8 @@ class CartPoleGenetic:
         for top_performer in top_performers:
             self.population.append(top_performer)
 
-        if(len(self.scores) >= 100):
-            if np.mean(self.scores[-100:]) >= self.convergence_condition:
+        if(len(self.best_scores) >= 100):
+            if np.mean(self.best_scores[-100:]) >= self.convergence_condition:
                 self.solved = True
 
 def main():      
