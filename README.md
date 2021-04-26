@@ -4,7 +4,7 @@ This repository contains a collection of algorithms used to solve the Cartpole e
 ## Cartpole
 
 <p align="center">
-  <img src="https://github.com/httpdaniel/cartpole-algorithms/blob/main/assets/cartpole-initial.png" width="500">
+  <img src="https://github.com/httpdaniel/cartpole-algorithms/blob/main/assets/cartpole-initial.png" width="300">
 </p>
 
 Cartpole balancing is a control problem where the goal is to balance a pole upright on the top of a cart by applying the appropriate forces left and right.
