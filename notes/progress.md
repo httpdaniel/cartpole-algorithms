@@ -31,3 +31,11 @@
 * The background research section of the report has been finalised. 
 
 * Members have started on the final presentation.
+
+## Week 7
+
+* The report has been finalised.
+
+* The presentation has been recorded.
+
+* The final project was submitted.
